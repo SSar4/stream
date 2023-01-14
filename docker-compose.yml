@@ -1,0 +1,26 @@
+services:
+  db:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_PASSWORD: ${PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${PASSWORD}
+    ports:
+      - '3306:3306'
+    expose:
+      # abre a porta 3306 do container
+      - '3306'
+      # onde sua data será  persistida
+    volumes:
+      - my-db:/var/lib/mysql
+  adminer:
+    image: adminer
+    depends_on:
+      - db
+    environment:
+      ADMINER_DEFAULT_SERVER: db
+    ports:
+      - 8080:8080
+volumes:
+  my-db:
