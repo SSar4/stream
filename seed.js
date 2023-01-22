@@ -3,7 +3,9 @@ const csv = require( 'csv-parser')
 const { Writable, Transform } = require( 'stream')
 const { connection } = require('./connectDb');
 
-
+const insert = async (rowData) => {
+  await connection('ubs').insert(rowData);
+}
 const readableStreamFile = fs.createReadStream('./Unidades_Basicas_Saude-UBS.csv')
 const transformToString = new Transform({
   objectMode: true,
@@ -12,11 +14,10 @@ const transformToString = new Transform({
   },
 })
 const writableStreamFile = new Writable({
-   async write(chunk, _encoding, next) {
+  write(chunk, _encoding, next) {
     const stringifyer = chunk.toString()
     const rowData = JSON.parse(stringifyer)
-    await connection('ubs').insert(rowData);
-     next()
+    insert(rowData).then(()=>next())
   },
 })
 
