@@ -34,7 +34,7 @@ app.use('/memory', async function (req, res) {
 // stream's video
 app.get('/video', (req, res) => {
   //caminho do video
-  const file = `./video/video.mp4`;
+  const file = `./video.mp4`;
   fs.stat(file, (err, stats) => {
     if (err) {
       console.log(err);
